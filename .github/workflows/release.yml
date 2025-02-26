@@ -97,21 +97,12 @@ jobs:
     - name: Download Artifacts
       uses: actions/download-artifact@v4
       with:
+        merge-multiple: true
+        pattern: osc-cli-*
         path: artifacts/
 
-    - name: Debug - List Directory Contents
-      run: |
-        pwd
-        echo "Current directory contents:"
-        ls -R
-        echo "----------------------------"
-    
-    - name: Debug - List artifacts
-      run: |
-        pwd
-        echo "Artifacts directory contents:"
-        ls -R
-        echo "----------------------------"
+    - name: Debug
+      run: ls -R
 
     - name: Create GitHub Release
       env:
