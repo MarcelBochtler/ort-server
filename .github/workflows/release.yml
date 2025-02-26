@@ -100,11 +100,6 @@ jobs:
     permissions:
       contents: write
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      with:
-        ref: ${{ env.ORT_SERVER_VERSION }}
-
     - name: Download Artifacts
       uses: actions/download-artifact@v4
       with:
