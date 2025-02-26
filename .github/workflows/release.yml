@@ -56,12 +56,12 @@ jobs:
           artifact: osc-cli-macos-arm64
           buildPath: cli/build/bin/macosArm64/releaseExecutable/osc.kexe
           binName: osc
-        - name: "macOS x64"
-          os: macos-13
-          task: :cli:linkReleaseExecutableMacosX64
-          artifact: osc-cli-macos-x64
-          buildPath: cli/build/bin/macosX64/releaseExecutable/osc.kexe
-          binName: osc
+        # - name: "macOS x64"
+        #   os: macos-13
+        #   task: :cli:linkReleaseExecutableMacosX64
+        #   artifact: osc-cli-macos-x64
+        #   buildPath: cli/build/bin/macosX64/releaseExecutable/osc.kexe
+        #   binName: osc
     runs-on: ${{ matrix.target.os }}
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -96,6 +96,8 @@ jobs:
     steps:
     - name: Download Artifacts
       uses: actions/download-artifact@v4
+      with:
+        path: artifacts/
 
     - name: Debug
       run: ls -R .
@@ -108,7 +110,7 @@ jobs:
           PRERELEASE_ARG="--prerelease"
         fi
 
-        gh release create $ORT_SERVER_VERSION --notes-file RELEASE_NOTES.md $PRERELEASE_ARG \
+        gh release create $ORT_SERVER_VERSION --notes-file artifacts/RELEASE_NOTES.md $PRERELEASE_ARG \
           ./artifacts/osc-cli-linux-x64/osc#osc-${ORT_SERVER_VERSION}-linux-x64 \
           ./artifacts/osc-cli-macos-arm64/osc#osc-${ORT_SERVER_VERSION}-macos-arm64 \
           ./artifacts/osc-cli-macos-x64/osc#osc-${ORT_SERVER_VERSION}-macos-x64
