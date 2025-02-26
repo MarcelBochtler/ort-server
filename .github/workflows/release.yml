@@ -76,16 +76,16 @@ jobs:
     - name: Build CLI
       run: ./gradlew --stacktrace ${{ matrix.target.task }}
 
-    - name: Rename CLI
-      run: |
-        mkdir -p ${{ matrix.target.artifact }}
-        mv ${{ matrix.target.buildPath }} ${{ matrix.target.artifact }}/${{ matrix.target.binName }}
+    # - name: Rename CLI
+    #   run: |
+    #     mkdir -p ${{ matrix.target.artifact }}
+    #     mv ${{ matrix.target.buildPath }} ${{ matrix.target.artifact }}/${{ matrix.target.binName }}
 
     - name: Upload CLI Artifact
       uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
       with:
         name: ${{ matrix.target.artifact }}
-        path: ${{ matrix.target.artifact }}/${{ matrix.target.binName }}
+        path: ${{ matrix.target.buildPath }}
         retention-days: 7
 
   create-release:
@@ -94,6 +94,11 @@ jobs:
     permissions:
       contents: write
     steps:
+    - name: Checkout Repository
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      with:
+        ref: ${{ env.ORT_SERVER_VERSION }}
+
     - name: Download Artifacts
       uses: actions/download-artifact@v4
       with:
@@ -111,7 +116,6 @@ jobs:
         fi
 
         gh release create $ORT_SERVER_VERSION --notes-file ./artifacts/release-notes/RELEASE_NOTES.md $PRERELEASE_ARG \
-          ./artifacts/osc-cli-linux-x64/osc#osc-${ORT_SERVER_VERSION}-linux-x64 \
-          ./artifacts/osc-cli-macos-arm64/osc#osc-${ORT_SERVER_VERSION}-macos-arm64 \
-          ./artifacts/osc-cli-macos-x64/osc#osc-${ORT_SERVER_VERSION}-macos-x64
-
+          ./artifacts/osc-cli-linux-x64/osc.kexe#osc-${ORT_SERVER_VERSION}-linux-x64 \
+          ./artifacts/osc-cli-macos-arm64/osc.kexe#osc-${ORT_SERVER_VERSION}-macos-arm64 \
+          ./artifacts/osc-cli-macos-x64/osc.kexe#osc-${ORT_SERVER_VERSION}-macos-x64
