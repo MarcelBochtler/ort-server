@@ -89,22 +89,11 @@ jobs:
       run: |
         tar -czf ${{ matrix.target.artifact }}.tar.gz -C ${{ matrix.target.artifact }} ${{ matrix.target.binName }}
 
-    - name: Create checksums
-      run: |
-        shasum --algorithm 256 ${{ matrix.target.artifact }}.tar.gz > ${{ matrix.target.artifact }}.tar.gz.sha256
-
     - name: Upload binaries
       uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
       with:
         name: ${{ matrix.target.artifact }}
         path: ${{ matrix.target.artifact }}.tar.gz
-        retention-days: 7
-
-    - name: Upload checksums
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ matrix.target.artifact }}-checksums
-        path: ${{ matrix.target.artifact }}.tar.gz.sha256
         retention-days: 7
 
   create-release:
@@ -124,6 +113,10 @@ jobs:
       with:
         path: artifacts/
 
+    - name: Create checksums
+      run: |
+        shasum --algorithm 256 ./artifacts/osc-cli-*/*.tar.gz > checksums.txt
+
     - name: Create GitHub Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -136,5 +129,5 @@ jobs:
           './artifacts/osc-cli-linux-x64/osc-cli-linux-x64.tar.gz#osc-cli-linux-x64' \
           './artifacts/osc-cli-macos-arm64/osc-cli-macos-arm64.tar.gz#osc-cli-macos-arm64' \
           './artifacts/osc-cli-macos-x64/osc-cli-macos-x64.tar.gz#osc-cli-macos-x64' \
-          ./artifacts/osc-cli-*-checksums/osc-cli-*.tar.gz.sha256
+          'checksums.txt#checksums'
 
