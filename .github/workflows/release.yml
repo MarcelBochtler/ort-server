@@ -48,20 +48,20 @@ jobs:
           os: ubuntu-24.04
           task: :cli:linkReleaseExecutableLinuxX64
           artifact: osc-cli-linux-x64
-          build-path: cli/build/bin/linuxX64/releaseExecutable/osc.kexe
-          bin-name: osc
+          buildPath: cli/build/bin/linuxX64/releaseExecutable/osc.kexe
+          binName: osc
         - name: "macOS arm64"
           os: macos-15
           task: :cli:linkReleaseExecutableMacosArm64
           artifact: osc-cli-macos-arm64
-          build-path: cli/build/bin/macosArm64/releaseExecutable/osc.kexe
-          bin-name: osc
+          buildPath: cli/build/bin/macosArm64/releaseExecutable/osc.kexe
+          binName: osc
         - name: "macOS x64"
           os: macos-13
           task: :cli:linkReleaseExecutableMacosX64
           artifact: osc-cli-macos-x64
-          build-path: cli/build/bin/macosX64/releaseExecutable/osc.kexe
-          bin-name: osc
+          buildPath: cli/build/bin/macosX64/releaseExecutable/osc.kexe
+          binName: osc
     runs-on: ${{ matrix.target.os }}
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -79,13 +79,13 @@ jobs:
     - name: Rename CLI
       run: |
         mkdir -p ${{ matrix.target.artifact }}
-        mv ${{ matrix.target.build-path }} ${{ matrix.target.artifact }}/${{ matrix.target.bin-name }}
+        mv ${{ matrix.target.buildPath }} ${{ matrix.target.artifact }}/${{ matrix.target.binName }}
 
     - name: Upload CLI Artifact
       uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
       with:
         name: ${{ matrix.target.artifact }}
-        path: ${{ matrix.target.build-path }}
+        path: ${{ matrix.target.artifact }}/${{ matrix.target.binName }}
         retention-days: 7
 
   create-release:
@@ -96,13 +96,9 @@ jobs:
     steps:
     - name: Download Artifacts
       uses: actions/download-artifact@v4
-      with:
-        merge-multiple: true
-        pattern: osc-cli-*
-        path: artifacts/
 
     - name: Debug
-      run: ls -R
+      run: ls -R .
 
     - name: Create GitHub Release
       env:
