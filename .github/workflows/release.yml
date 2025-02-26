@@ -116,6 +116,6 @@ jobs:
         fi
 
         gh release create $ORT_SERVER_VERSION --notes-file ./artifacts/release-notes/RELEASE_NOTES.md $PRERELEASE_ARG \
-          ./artifacts/osc-cli-linux-x64/osc \
-          ./artifacts/osc-cli-macos-arm64/osc \
-          ./artifacts/osc-cli-macos-x64/osc
+          './artifacts/osc-cli-linux-x64/osc#osc-linux-x64' \
+          './artifacts/osc-cli-macos-arm64/osc#osc-macos-arm64' \
+          './artifacts/osc-cli-macos-x64/osc#osc-macos-x64'
