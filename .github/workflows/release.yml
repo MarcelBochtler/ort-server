@@ -126,5 +126,5 @@ jobs:
           './artifacts/osc-cli-linux-x64/osc-cli-linux-x64.tar.gz#osc-cli-linux-x64' \
           './artifacts/osc-cli-macos-arm64/osc-cli-macos-arm64.tar.gz#osc-cli-macos-arm64' \
           './artifacts/osc-cli-macos-x64/osc-cli-macos-x64.tar.gz#osc-cli-macos-x64' \
-          './artifacts/osc-cli-*/osc-cli-*.tar.gz.sha256
+          './artifacts/osc-cli-*/osc-cli-*.tar.gz.sha256'
 
