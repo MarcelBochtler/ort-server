@@ -81,11 +81,15 @@ jobs:
         mkdir -p ${{ matrix.target.artifact }}
         mv ${{ matrix.target.buildPath }} ${{ matrix.target.artifact }}/${{ matrix.target.binName }}
 
+    - name: Compress binaries
+      run: |
+        tar -czf ${{ matrix.target.artifact }}.tar.gz -C ${{ matrix.target.artifact }} ${{ matrix.target.binName }}
+
     - name: Upload CLI Artifact
       uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
       with:
         name: ${{ matrix.target.artifact }}
-        path: ${{ matrix.target.artifact }}/${{ matrix.target.binName }}
+        path: ${{ matrix.target.artifact }}.tar.gz
         retention-days: 7
 
   create-release:
@@ -116,6 +120,6 @@ jobs:
         fi
 
         gh release create $ORT_SERVER_VERSION --notes-file ./artifacts/release-notes/RELEASE_NOTES.md $PRERELEASE_ARG \
-          './artifacts/osc-cli-linux-x64/osc#osc-linux-x64' \
-          './artifacts/osc-cli-macos-arm64/osc#osc-macos-arm64' \
-          './artifacts/osc-cli-macos-x64/osc#osc-macos-x64'
+          './artifacts/osc-cli-linux-x64/osc-cli-linux-x64.tar.gz#osc-linux-x64' \
+          './artifacts/osc-cli-macos-arm64/osc-macos-x64.tar.gz#osc-macos-arm64' \
+          './artifacts/osc-cli-macos-x64/osc-macos-x64#osc-macos-x64'
