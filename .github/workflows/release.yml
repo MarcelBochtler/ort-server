@@ -76,11 +76,13 @@ jobs:
     - name: Build CLI
       run: ./gradlew --stacktrace ${{ matrix.target.task }}
 
-    - name: Rename CLI
+    - name: Rename binaries
       run: |
         mkdir -p ${{ matrix.target.artifact }}
         mv ${{ matrix.target.buildPath }} ${{ matrix.target.artifact }}/${{ matrix.target.binName }}
 
+    # Compress the binaries to reduce the size of the artifacts, to keep `osc` as the binary name, and to ensure the
+    # executable permissions are preserved.
     - name: Compress binaries
       run: |
         tar -czf ${{ matrix.target.artifact }}.tar.gz -C ${{ matrix.target.artifact }} ${{ matrix.target.binName }}
@@ -121,5 +123,5 @@ jobs:
 
         gh release create $ORT_SERVER_VERSION --notes-file ./artifacts/release-notes/RELEASE_NOTES.md $PRERELEASE_ARG \
           './artifacts/osc-cli-linux-x64/osc-cli-linux-x64.tar.gz#osc-cli-linux-x64' \
-          './artifacts/osc-cli-macos-arm64/osc-cli-macos-x64.tar.gz#osc-cli-macos-arm64' \
+          './artifacts/osc-cli-macos-arm64/osc-cli-macos-arm64.tar.gz#osc-cli-macos-arm64' \
           './artifacts/osc-cli-macos-x64/osc-cli-macos-x64.tar.gz#osc-cli-macos-x64'
