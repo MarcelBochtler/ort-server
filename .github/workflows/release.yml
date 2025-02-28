@@ -134,8 +134,8 @@ jobs:
     - name: Compress binaries
       shell: bash
       run: |
-        if [[ "${{ matrix.target.name }}" =~ [Ww]indows ]]; then
-          zip -j ${{ matrix.target.artifact }}.${{ matrix.target.archiveExt }} ${{ matrix.target.artifact }}/${{ matrix.target.binName }}
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          powershell Compress-Archive -Path ${{ matrix.target.artifact }}/${{ matrix.target.binName }} -DestinationPath ${{ matrix.target.artifact }}.${{ matrix.target.archiveExt }}
         else
           tar -czf ${{ matrix.target.artifact }}.${{ matrix.target.archiveExt }} -C ${{ matrix.target.artifact }} ${{ matrix.target.binName }}
         fi
