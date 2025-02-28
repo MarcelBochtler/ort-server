@@ -135,7 +135,7 @@ jobs:
       shell: bash
       run: |
         if [[ "${{ matrix.target.name }}" =~ [Ww]indows ]]; then
-          powershell Compress-Archive -Path ${{ matrix.target.artifact }}\${{ matrix.target.binName }} -DestinationPath ${{ matrix.target.artifact }}.${{ matrix.target.archiveExt }}
+          zip -j ${{ matrix.target.artifact }}.${{ matrix.target.archiveExt }} ${{ matrix.target.artifact }}/${{ matrix.target.binName }}
         else
           tar -czf ${{ matrix.target.artifact }}.${{ matrix.target.archiveExt }} -C ${{ matrix.target.artifact }} ${{ matrix.target.binName }}
         fi
