@@ -134,7 +134,7 @@ jobs:
     - name: Compress binaries
       shell: bash
       run: |
-        if [[ "${{ matrix.target.name }}" =~ "(?i)Windows" ]]; then
+        if [[ "${{ matrix.target.name }}" =~ [Ww]indows ]]; then
           powershell Compress-Archive -Path ${{ matrix.target.artifact }}\${{ matrix.target.binName }} -DestinationPath ${{ matrix.target.artifact }}.${{ matrix.target.archiveExt }}
         else
           tar -czf ${{ matrix.target.artifact }}.${{ matrix.target.archiveExt }} -C ${{ matrix.target.artifact }} ${{ matrix.target.binName }}
@@ -181,4 +181,5 @@ jobs:
           './artifacts/osc-cli-linux-x64/osc-cli-linux-x64.tar.gz#osc-cli-linux-x64' \
           './artifacts/osc-cli-macos-arm64/osc-cli-macos-arm64.tar.gz#osc-cli-macos-arm64' \
           './artifacts/osc-cli-macos-x64/osc-cli-macos-x64.tar.gz#osc-cli-macos-x64' \
+          './artifacts/osc-cli-windows-x64/osc-cli-windows-x64.zip#osc-cli-windows-x64' \
           'checksums.txt#checksums'
