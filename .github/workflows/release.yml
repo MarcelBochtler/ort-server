@@ -134,10 +134,10 @@ jobs:
     - name: Compress binaries
       shell: bash
       run: |
-        if [ "$RUNNER_OS" != "Windows" ]; then
-          tar -czf ${{ matrix.target.artifact }}.${{ matrix.target.archiveExt }} -C ${{ matrix.target.artifact }} ${{ matrix.target.binName }}
-        else
+        if [[ "${{ matrix.target.name }}" =~ "(?i)Windows" ]]; then
           powershell Compress-Archive -Path ${{ matrix.target.artifact }}\${{ matrix.target.binName }} -DestinationPath ${{ matrix.target.artifact }}.${{ matrix.target.archiveExt }}
+        else
+          tar -czf ${{ matrix.target.artifact }}.${{ matrix.target.archiveExt }} -C ${{ matrix.target.artifact }} ${{ matrix.target.binName }}
         fi
 
     - name: Upload binaries
