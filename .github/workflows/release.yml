@@ -80,6 +80,7 @@ jobs:
           artifact: osc-cli-linux-x64
           buildPath: cli/build/bin/linuxX64/releaseExecutable/osc.kexe
           binName: osc
+          archiveExt: tar.gz
         - name: "macOS arm64"
           os: macos-15
           task: :cli:linkReleaseExecutableMacosArm64
